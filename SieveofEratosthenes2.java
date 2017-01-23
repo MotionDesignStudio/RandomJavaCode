@@ -1,9 +1,33 @@
+/*
+ * In 250s BCE the sieve of Eratosthenes was discovered to find prime numbers.  
+ * I implemented two versions of this sieve algorithm.  The first uses two 
+ * procedures/method/subroutines to find all the prime numbers in a range starting 
+ * from 2 – given number.  In this example I use 2 – 2017.
+
+The two method approach reflects how a humyn thinks and would approach solving the problem.
+The single method approach is a more streamlined approach. 
+
+Example: 
+ Execute
+  java SieveofEratosthenes2
+
+ Compile
+  javac SieveofEratosthenes2.java
+
+More info here:  https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+
+Output 2 - 10,000
+http://mo-de.net/d/primeNumbers.txt
+
+ */
+
+
 
 import java.util.Arrays;
 
 public class SieveofEratosthenes2 {
     
-  
+  // This method is no longer in use
     public static int searchArrayForThisNumPos (int [] a, int target){
         
         for (int i = 0; i< a.length; i++){
@@ -58,7 +82,7 @@ public class SieveofEratosthenes2 {
         }
         
         if ( shouldITerminate == 2 ){ 
-            searchForNextFalse (searchArrayForThisNumPos (myIntArray, starting ) + 1, myBooleanArray, myIntArray);
+            searchForNextFalse (starting - 1, myBooleanArray, myIntArray);
        }else if ( shouldITerminate == 1 ){ 
             formatOutput ( myBooleanArray, myIntArray);
         }
@@ -131,12 +155,10 @@ public class SieveofEratosthenes2 {
         }
         
         if ( shouldITerminate == 2 ){ 
-            //searchForNextZero (searchArrayForThisNumPos (myIntArray, starting ) + 1, myIntArray);
             searchForNextZero ( starting -1 , myIntArray);
        }else if ( shouldITerminate == 1 ){ 
             formatOutput2 ( myIntArray);
         }
-        //System.out.println ( Arrays.toString( myIntArray ) );
     }
   
   
@@ -146,7 +168,7 @@ public class SieveofEratosthenes2 {
        
       String lengthOfLargestNumber = Integer.toString(myIntArray [myIntArray.length-1] );
        
-       int paddingForDisplay = lengthOfLargestNumber.length()+4;
+       int paddingForDisplay = lengthOfLargestNumber.length()+6;
        String formatOutPaddingString = "%"+Integer.toString( paddingForDisplay )+"d";
        
        int numColumns= 10;
@@ -172,18 +194,14 @@ public class SieveofEratosthenes2 {
    
     public static void main(String[] args){
       
-      int[] checkMeForPrimeNumbers = rangeArray (200);
+      int[] checkMeForPrimeNumbers = rangeArray (10000);
       
-      int [] testArray = {2,3,4,5,6,7,8,9,10,11,12};
       boolean [] booleanArray = new boolean [ checkMeForPrimeNumbers.length ];
       Arrays.fill(booleanArray, Boolean.FALSE);
       
       searchForNextFalse (0, booleanArray, checkMeForPrimeNumbers);
       
-      searchForNextZero (0,checkMeForPrimeNumbers );
-      
-      //searchForPrime2 (3, testArray);
-               
+      searchForNextZero (0,checkMeForPrimeNumbers );            
 
 }
     
