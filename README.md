@@ -3,6 +3,27 @@ RandomJavaCode
 
 This is a collection of Java code to solve various tasks.
 
+////////////////// Palindromes  //////////////////
+
+Example: 
+	Execute
+		java Palindromes englishWords.txt
+
+	Compile
+		javac Palindromes.class
+
+	Output 
+		...
+		ADA
+		adda
+		Adda
+		addda
+		Adinida
+		AEA
+		Aeaea
+		...
+
+
 ////////////////// Alphabet Histogram  //////////////////
 
 Example: 
