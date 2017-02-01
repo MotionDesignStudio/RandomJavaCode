@@ -3,7 +3,66 @@ RandomJavaCode
 
 This is a collection of Java code to solve various tasks.
 
+
+////////////////// Abecedarian  //////////////////
+
+Description:
+
+abecedarian ( noun )
+1. a person who is learning the letters of the alphabet.
+2. a beginner in any field of learning.
+( adjective )
+3. of or relating to the alphabet.
+4. arranged in alphabetical order.
+5. rudimentary; elementary; primary.
+
+http://www.dictionary.com/browse/abecedarian
+
+Example: 
+	Execute
+		java Abecedarian englishWords.txt
+
+	Compile
+		javac Abecedarian.class
+
+	Output 
+		...
+		borty 
+		cestuy
+		forty
+		ghosty
+		horsy
+		NPR
+
+////////////////// Doubloon  //////////////////
+
+Description:
+
+"A word is said to be a “doubloon” if every letter that appears in the word appears
+exactly twice." ~ Allen B. Downey and Chris Mayfield, Think Java - How to Think Like a Computer Scientist, O'Reilly Media, June 2, 2016 
+
+Example: 
+	Execute
+		java Doubloon englishWords.txt
+
+	Compile
+		javac Doubloon.class
+
+	Output 
+		...
+		Anna
+		appall
+		appearer
+		appeases
+		arar
+		arraigning
+
+
 ////////////////// Palindromes  //////////////////
+
+Description:
+
+palindrome - "a word, line, verse, number, sentence, etc., reading the same backward as forward, as Madam, I'm Adam or Poor Dan is in a droop." ~ http://www.dictionary.com/browse/palindrome
 
 Example: 
 	Execute
