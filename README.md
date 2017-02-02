@@ -3,6 +3,29 @@ RandomJavaCode
 
 This is a collection of Java code to solve various tasks.
 
+////////////////// Anagram  //////////////////
+
+Description:
+
+anagram ( noun )
+1. a word, phrase, or sentence formed from another by rearranging its letters: “Angel” is an anagram of “glean.”.
+
+http://www.dictionary.com/browse/anagram
+
+Example: 
+	Execute
+		java anagrams englishWords.txt love
+
+	Compile
+		javac anagrams.class
+
+	Output 
+		levo
+		love
+		Love
+		velo
+		vole
+
 
 ////////////////// Abecedarian  //////////////////
 
