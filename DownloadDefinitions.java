@@ -1,6 +1,3 @@
-// import java.io.IOException;
-// export CLASSPATH=$CLASSPATH:jsoup-1.10.2.jar
-   
 import java.io.IOException;
 
 import org.jsoup.Jsoup;  
@@ -8,8 +5,53 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;  
 import org.jsoup.select.Elements; 
 import org.jsoup.HttpStatusException;
+import org.jsoup.safety.Whitelist;
 
 public class DownloadDefinitions {
+    // Help
+    public static void HelpSection ( ) {
+        System.out.printf("%s%n%n", "Example:  java -cp .:./jsoup-1.10.2.jar DownloadDefinitions " +'"'+ "d1"+'"'+ '"'+"love" +'"' );
+        System.out.printf("%s%n", "Command | Searches ↓" );
+        System.out.printf("%s%n", "     d1 | http://www.thefreedictionary.com" );
+        System.out.printf("%s%n", "     d2 | https://www.merriam-webster.com" );
+        System.out.printf("%s%n", "     d3 | http://www.dictionary.com" );
+        System.out.printf("%s%n", "     d4 | https://en.wikipedia.org" );
+        System.out.printf("%s%n", "     d5 | http://www.thesaurus.com" );
+        System.out.printf("%s%n", "     d6 | http://www.etymonline.com" );
+        System.out.printf("%s%n", "     d7 | http://medical-dictionary.thefreedictionary.com" );
+        System.out.printf("%s%n", "     d8 | http://legal-dictionary.thefreedictionary.com" );
+        System.out.printf("%s%n", "     d9 | http://acronyms.thefreedictionary.com" );
+        System.out.printf("%s%n", "    d10 | http://www.urbandictionary.com" );
+        System.out.printf("%s%n", "    d11 | https://www.merriam-webster.com/ Medical Dictionary" );
+        System.out.printf("%s%n", "    d12 | http://www.netlingo.com" );
+        System.out.printf("%s%n", "    d13 | http://dictionary.cambridge.org" );
+        System.out.printf("%s%n", "    d14 | https://plato.stanford.edu" );
+        System.out.printf("%s%n", "    d15 | https://www.merriam-webster.com/thesaurus" );
+
+    }
+    
+    
+    public static String br2nl(String html) {
+        String returnMe="";
+        String[] replaceMe = {"&lt;", "&gt;"};
+        String[] replaceMeWith = {"<", ">"};
+               
+        if(html==null)
+            return html;
+        Document document = Jsoup.parse(html);
+        document.outputSettings(new Document.OutputSettings().prettyPrint(false));//makes html() preserve linebreaks and spacing
+        document.select("br").append("\\n");
+        document.select("p").prepend("\\n");
+        String s = document.html().replaceAll("\\\\n", "\n");
+        returnMe = Jsoup.clean(s, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false));
+        
+        for ( int i = 0; i< replaceMe.length; i++ ) {
+            returnMe = returnMe.replaceAll( replaceMe[i] , replaceMeWith[i] ); 
+        }
+        
+        return returnMe;
+    }
+    
       
     public static void getDefinition ( String s , String whichSource) throws IOException {
 
@@ -32,12 +74,6 @@ public class DownloadDefinitions {
                         System.out.printf("%s%n", classOnPage.text());
                 }
                 
-//                if ( definitionClass != null ) {
-//                    System.out.printf("%s : %s%n", s,  definitionClass.text()); 
-//                } else {
-//                    System.out.printf("%s%n", "No definition found try another source." );
-//                    System.out.printf("%s%n", "\"d2\""+ "\""+ s + "\"" + " \"d3\""+ "\""+ s + "\"" + " or \"d4\""+ "\""+ s );
-//                }
             }
             
         } catch (NullPointerException e) {
@@ -66,14 +102,7 @@ public class DownloadDefinitions {
                         System.out.printf("%s%n", spanOnPage.text());
                     }
                 }
-                
-//                if ( definitionClass != null ) {
-//                    System.out.printf("%s : %s%n", s,  definitionClass.text()); 
-//                } else {
-//                    System.out.printf("%s%n", "No definition found try another source." );
-//                    System.out.printf("%s%n", "\"d1\""+ "\""+ s + "\"" + " \"d3\""+ "\""+ s + "\"" + " or \"d4\""+ "\""+ s );
-//                }
-                
+                               
             }
         
         } catch (NullPointerException e) {
@@ -100,14 +129,7 @@ public class DownloadDefinitions {
                     divOnPage = divsOnPage.get(i);
                     System.out.printf("%s%n", divOnPage.text());
                 }
-                   
-//                if ( definitionClass != null ) {
-//                    System.out.printf("%s : %s%n", s,  definitionClass.text()); 
-//                } else {
-//                    System.out.printf("%s%n", "No definition found try another source." );
-//                    System.out.printf("%s%n", "\"d1\""+ "\""+ s + "\"" + " \"d2\""+ "\""+ s + "\"" + " or \"d4\""+ "\""+ s );
-//                }
-                
+                                   
             }
 
         } catch (NullPointerException e) {
@@ -118,7 +140,7 @@ public class DownloadDefinitions {
             e.printStackTrace();
         }
         
-       try { // Wikipedia
+       try { 
             if ( whichSource.equals ("d4") ){
                 theUrl = "https://en.wikipedia.org/wiki/" + s;
                 Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
@@ -180,9 +202,7 @@ public class DownloadDefinitions {
                 
                 String a = "";
                 String firstParagraphText = "";
-                
-               // System.out.printf("XXXXXXXXX :: %d%n", dds );
-                
+                                
                 System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
                                 
                 if ( ( dds >1 ) && ( paragraphs != null ) ){
@@ -223,28 +243,16 @@ public class DownloadDefinitions {
                 theUrl = "http://medical-dictionary.thefreedictionary.com/" + s;
                 
                 Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
-                
-                Element definitionClass = doc.getElementsByClass ( "pseg").first();
+
                 System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
-                
-                Elements classesOnPage = doc.select(".pseg .ds-list");
                 Element classOnPage;
                 
-                //Elements definitionClass2 = doc.getElementsByClass ( "pseg");
-                Elements definitionClass2 = doc.select ( ".pseg");
+                Elements definitionClass3 = doc.select ( "section" );               
                 
-                Element partOfSpeachs = definitionClass2.get (0);
-                //Element partOfSpeach;
-                //partOfSpeach = partOfSpeachs.get(2); 
-                
-               // System.out.printf("%s%n", definitionClass2.text() );
-                //System.out.printf("%d%n", definitionClass2.size() );
-                System.out.printf("%s%n", partOfSpeachs );
-
-                //for ( int i =0; i < classesOnPage.size(); i++ ){
-                    //classOnPage = classesOnPage.get(i);
-                    //System.out.printf("%s%n", classOnPage.text());
-                //}
+                for ( int i =0; i < definitionClass3.size()-2; i++ ){
+                    classOnPage = definitionClass3.get(i);
+                    System.out.printf("%s%n%n", classOnPage.text());
+                }
                 
 
             }
@@ -257,20 +265,249 @@ public class DownloadDefinitions {
             e.printStackTrace();
         }
         
+        try {
+            if ( whichSource.equals ("d8") ){
+                theUrl = "http://legal-dictionary.thefreedictionary.com/" + s;
                 
+                Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
+
+                System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
+                Element classOnPage;
+                Elements definitionClass3 = doc.select ( "section" );
+                
+                for ( int i =0; i < definitionClass3.size()-2; i++ ){
+                    classOnPage = definitionClass3.get(i);
+                    System.out.printf("%s%n%n", classOnPage.text());
+                }
+                
+
+            }
+            
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (HttpStatusException e) {
+            e.printStackTrace();
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }
+        
+        try {
+            if ( whichSource.equals ("d9") ){
+                theUrl = "http://acronyms.thefreedictionary.com/" + s;
+                
+                Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
+
+                System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
+                Element classOnPage;
+
+                Elements definitionClass3 = doc.select ( "#Definition tr" );
+                
+                for ( int i =1; i < definitionClass3.size()-2; i++ ){
+                    classOnPage = definitionClass3.get(i);
+                    System.out.printf("%s%n", classOnPage.text());
+                }
+
+            }
+            
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (HttpStatusException e) {
+            e.printStackTrace();
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }
+        
+        try {
+            if ( whichSource.equals ("d10") ){             
+                theUrl = "http://www.urbandictionary.com/define.php?term=" + s;
+                
+                Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
+
+                System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
+
+                Element classOnPage;
+                
+                Elements definitionClass3 = doc.select ( ".meaning" );
+                Elements definitionExamples = doc.select ( ".example" );
+                
+                Element definitionExample;
+                                               
+                for ( int i =0; i < definitionClass3.size(); i++ ){
+                    classOnPage = definitionClass3.get( i );
+                    definitionExample = definitionExamples.get( i );
+                    System.out.printf("%s%nExample: %s%n%n", classOnPage.text(), definitionExample.text() );
+                }
+                
+            }
+            
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (HttpStatusException e) {
+            e.printStackTrace();
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }
+        
+        try {
+            if ( whichSource.equals ("d11") ){             
+                theUrl = "https://www.merriam-webster.com/dictionary/" + s +"#medicalDictionary";
+                
+                Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
+
+                System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
+
+                Elements definitionClass = doc.select ( ".card-primary-content" );
+
+                Element definitionExample;
+                for ( int i =0; i < definitionClass.size(); i++ ){
+                    definitionExample = definitionClass.get( i );
+                    System.out.printf("%s%n%n", definitionExample.text() );
+                }
+
+            }
+            
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (HttpStatusException e) {
+            e.printStackTrace();
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }
+        
+        try {
+            if ( whichSource.equals ("d12") ){             
+                theUrl = "http://www.netlingo.com/word/" + s +".php";
+                
+                Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
+
+                System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
+                
+                Elements definitionClass = doc.select ( ".body p" );
+                Element definitionExample;
+                
+                for ( int i =0; i < definitionClass.size(); i++ ){
+                    definitionExample = definitionClass.get( i );
+                    System.out.printf("%s%n%n", definitionExample.text() );
+                }
+                
+            }
+            
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (HttpStatusException e) {
+            e.printStackTrace();
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }
+                
+        
+        try {
+            if ( whichSource.equals ("d13") ){             
+                theUrl = "http://dictionary.cambridge.org/us/dictionary/english/" + s;
+                
+                Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
+
+                System.out.printf("%nSEARCHING : %s%n%n", theUrl);
+                Elements definitionClass = doc.select ( ".sense-body" );
+                
+                Element definitionExample;
+                
+                for ( int i =0; i < definitionClass.size(); i++ ){
+                    definitionExample = definitionClass.get( i );
+                    System.out.printf("%s%n%n", definitionExample.text() );
+                }
+                
+
+            }
+            
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (HttpStatusException e) {
+            e.printStackTrace();
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }
+         
+        try {
+            if ( whichSource.equals ("d14") ){             
+                theUrl = "https://plato.stanford.edu/entries/" + s +"/";
+                
+                Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
+
+                System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
+                
+                Elements preambleID = doc.select ( "#preamble" );
+                Elements tocID = doc.select ( "#toc" );
+                
+                Elements definitionClass = doc.select ( "#main-text" );
+                
+                System.out.printf("%s%n", br2nl ( preambleID.html() ));
+                System.out.printf("%s", br2nl ( tocID.html() ));
+                System.out.printf("%n%s%n%n", br2nl ( definitionClass.html() ));
+            }
+            
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (HttpStatusException e) {
+            e.printStackTrace();
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }     
+        
+        try {
+            if ( whichSource.equals ("d15") ){             
+                theUrl = "https://www.merriam-webster.com/thesaurus/" + s;
+                
+                Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
+
+                System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
+                
+                Elements wordAttributes = doc.select ( ".word-attributes" );
+                Elements theDefinitions = doc.select ( ".card-primary-content" );
+
+                for ( int i =0; i < wordAttributes.size(); i++ ){
+                    System.out.printf("%s :: %s", s, wordAttributes.get( i ).text() );
+                    System.out.printf("%s", br2nl ( theDefinitions.get( i ).html() ) );   
+                }
+                
+            }
+            
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (HttpStatusException e) {
+            e.printStackTrace();
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }          
+
     }
     
-   
-    public static void main(String[] args) throws IOException {
 
-        String lettersIhave = args[1];
-        String findMe = args[0];        
+    public static void main(String[] args) throws IOException {
         
-        if ( findMe.matches ("d[1-7]") ){
-            getDefinition ( lettersIhave , findMe );
+        // Check how many arguments were passed in
+        if (args.length == 0)
+        {
+            System.out.printf("%s%n%n", "Proper Usage is: " );
+            System.out.printf("%s%n%n", "Example:  java -cp .:./jsoup-1.10.2.jar DownloadDefinitions " +'"'+ "d1"+'"'+ '"'+"love" +'"' );
+            System.out.printf("%s%n%n", "Help: " );
+            System.out.printf("%s%n%n", "Example:  java -cp .:./jsoup-1.10.2.jar DownloadDefinitions " +'"'+ "help"+'"' );
+            System.out.printf("%s%n%n", "Compiling: " );
+            System.out.printf("%s%n", "Example:  javac -cp jsoup-1.10.2.jar DownloadDefinitions.java" );
+            System.exit(0);
+        } else if (args.length == 1) {
+            String findMe = args[0];
+            if ( findMe.matches ("\\bhelp\\b") ){
+                HelpSection ();
+            }
+        } else if (args.length == 2) {
+            String lettersIhave = args[1];
+            String findMe = args[0];
+            if ( findMe.matches ("\\bd(?:1[0-5]|[1-9])\\b") ){
+                getDefinition ( lettersIhave , findMe );
+            }
         }
 
-        
     }
         
 

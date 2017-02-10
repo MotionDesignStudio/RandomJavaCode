@@ -3,6 +3,31 @@ RandomJavaCode
 
 This is a collection of Java code to solve various tasks.
 
+
+////////////////// Commandline Words and Topics Research Tool  //////////////////
+
+Description:
+
+This is a comandline utility to assist with rapid research. If you are a word smith, enjoy researching topics, definitions, etymology, synonyms, antonyms, acronyms, medical terms, legal terms, text and chat acronyms, and newer words in Urban Dictionary. This application searches 15 different source.
+
+This is a comandline utility to assist with rapid research. If you are a word smith, enjoy researching topics, definitions, etymology, synonyms, antonyms, acronyms, medical terms, legal terms, text and chat acronyms, and newer words in Urban Dictionary. This application searches 15 different source.
+
+Example: 
+	Execute
+		Searching Example
+		java -cp .:./jsoup-1.10.2.jar DownloadDefinitions “d1” “love”
+		Help
+		java -cp .:./jsoup-1.10.2.jar DownloadDefinitions “help”	
+
+	Compile
+		javac -cp jsoup-1.10.2.jar DownloadDefinitions.java
+
+	Output 
+		SEARCHING : https://en.wikipedia.org/wiki/love
+
+		Love is a variety of different feelings, states, and attitudes that ranges from interpersonal affection (“I love my mother”) to pleasure (“I loved that meal”). It can refer to an emotion of a strong attraction and personal attachment.[1] It can also be a virtue representing human kindness, compassion, and affection—”the unselfish loyal and benevolent concern for the good of another”.[2] It may also describe compassionate and affectionate actions towards other humans, one’s self or animals.[3]
+
+
 ////////////////// Anagram  //////////////////
 
 Description:
