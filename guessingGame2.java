@@ -9,6 +9,7 @@ public class guessingGame2 {
     private int numberOfWins;
     private int numberOfGamesPlayed;
     private int totalSumeOfGuesses;
+    private int numberOfLosses;
     private boolean activeStatus;
     
     // Set Default Values
@@ -18,6 +19,7 @@ public class guessingGame2 {
         this.numberOfWins = 0;
         this.numberOfGamesPlayed = 0;
         this.totalSumeOfGuesses = 0;
+        this.numberOfLosses = 0;
         this.activeStatus = true;
     }
     
@@ -33,6 +35,10 @@ public class guessingGame2 {
     
     public int getNumberOfTries  (){
         return this.numberOfTries;
+    }
+    
+    public int getNumberOfLosses  (){
+        return this.numberOfLosses;
     }
     
     public int getNumberOfWins  (){
@@ -73,7 +79,12 @@ public class guessingGame2 {
     // Set total number of tries
     public void setTotalSumeOfGuesses ( ){
         this.totalSumeOfGuesses += this.numberOfTries;
-    }   
+    }
+    
+    // Set total number of losses
+    public void setNumberOfLosses ( ){
+        this.numberOfLosses += 1;
+    }  
     
     public void resetStatus ( ){
         this.numberOfTries = 0;
@@ -136,7 +147,7 @@ public class guessingGame2 {
     public static String initGameGetFirstPlayerName ( ){ 
        Scanner in = new Scanner(System.in);
 
-       System.out.printf ("%s%n", "Choose a new player name." );
+       System.out.printf ("%s%n", "Type a new player name." );
        String input = in.next();
        System.out.printf ("%s%n", "Your new player's name is \"" + input + "\"." );
        return input;
@@ -184,16 +195,41 @@ public class guessingGame2 {
     }
     
     public static void displayStats ( List <guessingGame2> listOfPlayers ){ 
-        
+        System.out.printf ("%n");
             for ( int i = 0; i < listOfPlayers.size (); i++ ) {
-                System.out.printf ("%10s %10s %s %10d %s %10d%n", "Player :: ", listOfPlayers.get( i ).getName(), " Number Of Wins :", listOfPlayers.get( i ).getNumberOfWins(), " Average Guesses :", listOfPlayers.get( i ).getAttemptStats() );
+                System.out.printf ("%10s %10s %s %10d %s %10d %s %10d%n", "Player :: ", listOfPlayers.get( i ).getName(), " Number Of Wins :", listOfPlayers.get( i ).getNumberOfWins(), " Average Guesses :", listOfPlayers.get( i ).getAttemptStats(), "  Number Of Looses :", listOfPlayers.get( i ).getNumberOfLosses() );
             }
+        System.out.printf ("%n");
     }
     
     public static void incrementAllPlayersNumberOfGamesPlayed ( List <guessingGame2> listOfPlayers ){ 
         
             for ( int i = 0; i < listOfPlayers.size (); i++ ) {
                listOfPlayers.get( i ).setNumberOfGamesPlayed();
+            }
+    }
+    
+    public static void incrementAllPlayersTotalSumeOfGuesses ( List <guessingGame2> listOfPlayers ){ 
+        
+            for ( int i = 0; i < listOfPlayers.size (); i++ ) {
+                    listOfPlayers.get( i ).setTotalSumeOfGuesses();
+            }
+    }
+    
+    public static void incrementAllPlayersNumberOfNumberOfLosses ( List <guessingGame2> listOfPlayers, int gameWinner ){ 
+        
+            for ( int i = 0; i < listOfPlayers.size (); i++ ) {
+                if ( i != gameWinner) {
+                    listOfPlayers.get( i ).setNumberOfLosses();
+                }
+            }
+    }
+    
+    
+    public static void resetNumberOfTriesForAllPlayers ( List <guessingGame2> listOfPlayers ){ 
+        
+            for ( int i = 0; i < listOfPlayers.size (); i++ ) {
+               listOfPlayers.get( i ).resetNumberOfTries();
             }
     }
     
@@ -223,9 +259,9 @@ public class guessingGame2 {
             } else{
                 whoseTurnIsIt = 0;
             }
-            
+            System.out.printf ("%s%n","[q]uit | [a]dd player | [d]elete player | [c]change number range | [g]et stats");
             System.out.printf ("%n\"%s\", I am thinking of a number between 0 and %d.  Can you guess what it is?\n%n", listOfPlayers.get( whoseTurnIsIt ).getName() , numberToRandomize);
-            System.out.printf ("%s%n","[q]uit | [a]dd player | [d]elete player | [g]et stats");
+            
             String input = in.next();
             
             // System.out.printf ("%s%n","[\033[1m q \033[0m]uit | [\033[1m a \033[0m]dd | [\033[1m d \033[0m]elete | [\033[1m g \033[0m] et stats");
@@ -238,11 +274,11 @@ public class guessingGame2 {
                    // Add to the number of guesses
                    listOfPlayers.get( whoseTurnIsIt ).setNumberOfTries();
                    
-                   System.out.printf ("You guessed %d, try guessing higher\n", Integer.valueOf (input));
+                   System.out.printf ("%nYou guessed %d, try guessing higher ↑%n%n", Integer.valueOf (input));
                } else if ( Integer.valueOf (input) > randomNumber ) {
                    // Add to the number of guesses
                    listOfPlayers.get( whoseTurnIsIt ).setNumberOfTries();                
-                   System.out.printf ( "You guessed %d, try guessing lower\n", Integer.valueOf (input) );
+                   System.out.printf ( "%nYou guessed %d, try guessing lower ↓%n%n", Integer.valueOf (input) );
                } else if ( Integer.valueOf (input) == randomNumber ) {
                    
                    // Add to the number of guesses
@@ -253,18 +289,20 @@ public class guessingGame2 {
                    
                    // Increment the number of games played for each player
                    incrementAllPlayersNumberOfGamesPlayed ( listOfPlayers );
+                   
+                   // Increment the number of losses for none winning player(s)
+                   incrementAllPlayersNumberOfNumberOfLosses( listOfPlayers, whoseTurnIsIt );
+                   
+                   // Add sum of total tries
+                   incrementAllPlayersTotalSumeOfGuesses ( listOfPlayers );
                        
-                   System.out.printf ("\"%s\", you guessed %d, using %d guesses! You have %d wins.%n", listOfPlayers.get( whoseTurnIsIt ).getName(), Integer.valueOf (input), listOfPlayers.get( whoseTurnIsIt ).getNumberOfTries (), listOfPlayers.get( whoseTurnIsIt ).getNumberOfWins () );
+                   System.out.printf ("%n\"%s\", you guessed %d, using %d guesses! You have %d wins.%n%n", listOfPlayers.get( whoseTurnIsIt ).getName(), Integer.valueOf (input), listOfPlayers.get( whoseTurnIsIt ).getNumberOfTries (), listOfPlayers.get( whoseTurnIsIt ).getNumberOfWins () );
                    
                    //Change the random number
                    randomNumber = random.nextInt( numberToRandomize )+1;
-                   System.out.printf ("randomNumber :: %d%n", randomNumber );
-                   
-                   // Add sum of total tries                   
-                   listOfPlayers.get( whoseTurnIsIt ).setTotalSumeOfGuesses();
-                   
+
                    // Reset number of tries
-                   listOfPlayers.get( whoseTurnIsIt ).resetNumberOfTries();
+                   resetNumberOfTriesForAllPlayers ( listOfPlayers );
                }
                 
             } catch ( NumberFormatException ne) {
@@ -280,6 +318,9 @@ public class guessingGame2 {
                     }else{
                         deletePlayer ( listOfPlayers );
                     }
+                 }else if ( input.equals("c") ) { // Change the random number range
+                     numberToRandomize = initGame ( );
+                     randomNumber = random.nextInt( numberToRandomize )+1;
                  }else if ( input.equals("g") ) {
                      displayStats ( listOfPlayers );
                 }
