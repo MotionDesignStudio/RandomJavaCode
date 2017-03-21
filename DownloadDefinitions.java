@@ -54,14 +54,14 @@ public class DownloadDefinitions {
     
       
     public static void getDefinition ( String s , String whichSource) throws IOException {
-
+       
         String theUrl = "";
         try {
             if ( whichSource.equals ("d1") ){
                 theUrl = "http://www.thefreedictionary.com/" + s;
                 
                 Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
-                
+                                
                 Element definitionClass = doc.getElementsByClass ( "pseg").first();
                 System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
                 
@@ -503,6 +503,7 @@ public class DownloadDefinitions {
         } else if (args.length == 2) {
             String lettersIhave = args[1];
             String findMe = args[0];
+            
             if ( findMe.matches ("\\bd(?:1[0-5]|[1-9])\\b") ){
                 getDefinition ( lettersIhave , findMe );
             }

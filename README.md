@@ -4,20 +4,39 @@ RandomJavaCode
 This is a collection of Java code to solve various tasks.
 
 
-////////////////// Commandline Words and Topics Research Tool  //////////////////
+////////////////// Guessing Game II //////////////////
+
+Guessing Game Version 2.0
+
+The user must try to guess a number between 0 -  whatever you choose.  This version adds player stats and the ability to add and remove players.
+
+Example: 
+	Execute
+		java guessingGame2
+
+	Compile
+		javac guessingGame2.class
+
+	Output 
+		"Jane", I am thinking of a number between 0 and 555.  Can you guess what it is?
+
+Youtube Demo: https://youtu.be/aWWyGZkIhOQ
+
+////////////////// Command Line Words and Topics Research Tool  //////////////////
 
 Description:
 
-This is a comandline utility to assist with rapid research. If you are a word smith, enjoy researching topics, definitions, etymology, synonyms, antonyms, acronyms, medical terms, legal terms, text and chat acronyms, and newer words in Urban Dictionary. This application searches 15 different source.
-
-This is a comandline utility to assist with rapid research. If you are a word smith, enjoy researching topics, definitions, etymology, synonyms, antonyms, acronyms, medical terms, legal terms, text and chat acronyms, and newer words in Urban Dictionary. This application searches 15 different source.
+This is a comand line utility to assist with rapid research. If you are a word smith, enjoy researching topics, definitions, etymology, synonyms, antonyms, acronyms, medical terms, legal terms, text and chat acronyms, and newer words in Urban Dictionary. This application searches 15 different source.
 
 Example: 
 	Execute
 		Searching Example
-		java -cp .:./jsoup-1.10.2.jar DownloadDefinitions “d1” “love”
+
+		java -cp .:./jsoup-1.10.2.jar DownloadDefinitions d1 love
+
 		Help
-		java -cp .:./jsoup-1.10.2.jar DownloadDefinitions “help”	
+
+		java -cp .:./jsoup-1.10.2.jar DownloadDefinitions help	
 
 	Compile
 		javac -cp jsoup-1.10.2.jar DownloadDefinitions.java
@@ -27,6 +46,7 @@ Example:
 
 		Love is a variety of different feelings, states, and attitudes that ranges from interpersonal affection (“I love my mother”) to pleasure (“I loved that meal”). It can refer to an emotion of a strong attraction and personal attachment.[1] It can also be a virtue representing human kindness, compassion, and affection—”the unselfish loyal and benevolent concern for the good of another”.[2] It may also describe compassionate and affectionate actions towards other humans, one’s self or animals.[3]
 
+Youtube Demo: https://youtu.be/Y6Y-cYtueZE
 
 ////////////////// Anagram  //////////////////
 
@@ -167,8 +187,8 @@ Example:
 
 ////////////////// Guessing Game //////////////////
 
-Guessing version 1.0
-The use must try to guess a number between 0 - 100.
+Guessing Game Version 1.0
+The user must try to guess a number between 0 - 100.
 
 Example: 
 	Execute
