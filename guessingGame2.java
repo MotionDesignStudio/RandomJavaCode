@@ -172,12 +172,12 @@ public class guessingGame2 {
             for ( int i = 0; i < listOfPlayers.size (); i++ ) {
 
                     if ( input.equals ( listOfPlayers.get( i ).getName() ) ){
-                        System.out.printf ("Removing Player : %s%n", listOfPlayers.get( i ).getName() );
+                        System.out.printf ("%n%nRemoving Player : %s%n%n", listOfPlayers.get( i ).getName() );
                         listOfPlayers.remove ( i );
                         
                         // Display how many player(s) left
                         for ( int ii = 0; ii < listOfPlayers.size (); ii++ ) {
-                            System.out.printf ("Remaining Player(s) : %s%n", listOfPlayers.get( ii ).getName()  );
+                            System.out.printf ("Remaining Player(s) : %s%n%n", listOfPlayers.get( ii ).getName()  );
                         }
                         
                         shouldIloop = false;
@@ -197,7 +197,7 @@ public class guessingGame2 {
     public static void displayStats ( List <guessingGame2> listOfPlayers ){ 
         System.out.printf ("%n");
             for ( int i = 0; i < listOfPlayers.size (); i++ ) {
-                System.out.printf ("%10s %10s %s %10d %s %10d %s %10d%n", "Player :: ", listOfPlayers.get( i ).getName(), " Number Of Wins :", listOfPlayers.get( i ).getNumberOfWins(), " Average Guesses :", listOfPlayers.get( i ).getAttemptStats(), "  Number Of Looses :", listOfPlayers.get( i ).getNumberOfLosses() );
+                System.out.printf ("%10s %5s %s %3d %s %3d %s %3d%n", "Player :: ", listOfPlayers.get( i ).getName(), " Number Of Wins :", listOfPlayers.get( i ).getNumberOfWins(), " Average Guesses :", listOfPlayers.get( i ).getAttemptStats(), "  Number Of Looses :", listOfPlayers.get( i ).getNumberOfLosses() );
             }
         System.out.printf ("%n");
     }
@@ -247,7 +247,7 @@ public class guessingGame2 {
         addPlayer ( initGameGetFirstPlayerName () ,  listOfPlayers);
         
         int whoseTurnIsIt = -1;
-        System.out.printf (" randomNumber :: %d%n%n", randomNumber );
+        // System.out.printf (" randomNumber :: %d%n%n", randomNumber );
         
         Scanner in = new Scanner(System.in);
         boolean shouldIloop = true;
