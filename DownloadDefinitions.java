@@ -27,7 +27,7 @@ public class DownloadDefinitions {
         System.out.printf("%s%n", "    d13 | http://dictionary.cambridge.org" );
         System.out.printf("%s%n", "    d14 | https://plato.stanford.edu" );
         System.out.printf("%s%n", "    d15 | https://www.merriam-webster.com/thesaurus" );
-
+		System.out.printf("%s%n", "    d16 | http://suggest.aspell.net" );
     }
     
     
