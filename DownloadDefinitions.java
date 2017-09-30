@@ -382,10 +382,10 @@ public class DownloadDefinitions {
 
                 System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
                 
-                Elements definitionClass = doc.select ( ".body p" );
+                Elements definitionClass = doc.select ( ".body strong" );
                 Element definitionExample;
                 
-                for ( int i =0; i < definitionClass.size(); i++ ){
+                for ( int i =0; i < definitionClass.size()-1; i++ ){
                     definitionExample = definitionClass.get( i );
                     System.out.printf("%s%n%n", definitionExample.text() );
                 }
@@ -478,7 +478,40 @@ public class DownloadDefinitions {
             e.printStackTrace();
         } catch ( IOException e) {
             e.printStackTrace();
-        }          
+        }
+
+	/* http://suggest.aspell.net/index.php/advance?word=tesd&spelling=american&dict=normal&sugmode=slow */
+
+        try {
+            if ( whichSource.equals ("d16") ){             
+                theUrl = "http://suggest.aspell.net/index.php/advance?word=" + s +"&spelling=american&dict=normal&sugmode=slow";
+                
+                Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
+
+                System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
+
+				/*Search for all the anchor tags */
+				Elements wordAttributes = doc.getElementsByTag("a");
+
+                for ( int i =0; i < wordAttributes.size(); i++ ){
+					/*Check if the anchor tag contains the string aspell-def then display the text within*/
+					if ( wordAttributes.get( i ).outerHtml().indexOf("aspell-def") > -1 ) {
+						System.out.printf("%s%n", wordAttributes.get( i ).text() );
+					}
+  
+                }
+	
+            }
+            
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (HttpStatusException e) {
+            e.printStackTrace();
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }  
+
+
 
     }
     
@@ -504,7 +537,7 @@ public class DownloadDefinitions {
             String lettersIhave = args[1];
             String findMe = args[0];
             
-            if ( findMe.matches ("\\bd(?:1[0-5]|[1-9])\\b") ){
+            if ( findMe.matches ("\\bd(?:1[0-6]|[1-9])\\b") ){
                 getDefinition ( lettersIhave , findMe );
             }
         }
