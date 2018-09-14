@@ -7,6 +7,9 @@ import org.jsoup.select.Elements;
 import org.jsoup.HttpStatusException;
 import org.jsoup.safety.Whitelist;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class DownloadDefinitions {
     // Help
     public static void HelpSection ( ) {
@@ -168,17 +171,56 @@ public class DownloadDefinitions {
                 theUrl = "http://www.thesaurus.com/browse/" + s +"?s=t";
                 Document doc = Jsoup.connect ( theUrl ).userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0").ignoreHttpErrors(true).referrer("http://www.google.com").get();
                 
-                Elements paragraphs = doc.select(".relevancy-list  .text");
-                Element p;
+				// Arraylist to store values so they can be alphabetized
+				ArrayList<String> alphabetizedMeSynonyms = new ArrayList<String>();
+				ArrayList<String> alphabetizedMeAntonyms = new ArrayList<String>();
+				
+                //Elements paragraphs = doc.select(".relevancy-list  .text");
+                //Element p;
+				
+				//Elements content = doc.getElementsByClass("synonyms-container css-14xt5dz e1991neq0");
+				//Elements links = doc.select("a");
+				
+				// Begin select Synonyms
+				Elements content = doc.getElementsByClass("css-1lc0dpe et6tpn80");
+				Elements links = content.select("a[href]");
+				Elements synonymslinks = content.get(0).select("a[href]");
+				// End select Synonyms
+				
+				// Begin select Antonyms
+				Elements contentAntonyms = doc.getElementsByClass("antonyms-container css-14xt5dz e1991neq0");
+				Elements linksAntonyms = contentAntonyms.select("a[href]");
+				//Elements synonymslinks = content.get(0).select("a[href]");
+				// End select Antonyms
+				
+				//System.out.printf("%s  ", "X X :: " + contentAntonyms.size() );
+				//System.out.printf("%s  ", "X X :: " + contentAntonyms.text() );
+				//System.out.printf("%s  ", "X X :: " + linksAntonyms.size() );
+				//System.out.printf("%s  ", "X X :: " + linksAntonyms.text() );
+								
+                System.out.printf("%nSEARCHING : %s%n%n", theUrl);   
+				
+				//System.out.printf("%s  ", "X X :: " + links.text() );
+				//System.out.printf("%s  ", "X X :: " + content.size() );
+				//System.out.printf("%s  ", "X X :: " + synonymslinks.size() );
+				//System.out.printf("%s  ", "X X :: " + content.get(0).text() );
+				//System.out.printf("%s  ", "X X :: " + synonymslinks.get(0).text() );
 
-                System.out.printf("%nSEARCHING : %s%n%n", theUrl);          
-
-                    for ( int ii =0; ii < paragraphs.size(); ii++ ){
-                        p = paragraphs.get(ii);
-                        //System.out.printf("%s%n", p.text());
-                        System.out.printf("%s  ", p.text());
-                    }
-                System.out.printf("%n");
+				for ( Element link : synonymslinks ){
+					alphabetizedMeSynonyms.add( link.text() );
+				}
+				
+				Collections.sort(alphabetizedMeSynonyms);
+				System.out.printf("%s  %n", "SYNONYMS :: \n\n" + alphabetizedMeSynonyms);
+				
+				for ( Element link : linksAntonyms ){
+					alphabetizedMeAntonyms.add( link.text() );
+				}
+				Collections.sort(alphabetizedMeAntonyms);
+				
+				System.out.printf("%s  ", "\nANTONYMS :: \n\n" + alphabetizedMeAntonyms );
+				
+                System.out.printf("%n%n");
             }
         } catch ( IOException e) {
             e.printStackTrace();

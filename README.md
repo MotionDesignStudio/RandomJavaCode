@@ -46,6 +46,11 @@ Example:
 
 		Love is a variety of different feelings, states, and attitudes that ranges from interpersonal affection (“I love my mother”) to pleasure (“I loved that meal”). It can refer to an emotion of a strong attraction and personal attachment.[1] It can also be a virtue representing human kindness, compassion, and affection—”the unselfish loyal and benevolent concern for the good of another”.[2] It may also describe compassionate and affectionate actions towards other humans, one’s self or animals.[3]
 
+Making It An Aliases
+	Edit the following file ~/.bashrc in your home directory.  It is located here. /home/yourUserName/.bashrc .  Add the following to this text file at the bottom.
+
+alias gd='/usr/bin/java -cp /home/yourUserName/java/jcode:/home/yourUserName/java/jcode/jsoup-1.10.2.jar DownloadDefinitions'
+
 Youtube Demo: https://youtu.be/Y6Y-cYtueZE
 
 ////////////////// Anagram  //////////////////
