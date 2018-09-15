@@ -7,8 +7,13 @@ import org.jsoup.select.Elements;
 import org.jsoup.HttpStatusException;
 import org.jsoup.safety.Whitelist;
 
+// I used this in d5 to arrange list alphabetically
 import java.util.ArrayList;
 import java.util.Collections;
+
+// These I need to make a system call to mplayer
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class DownloadDefinitions {
     // Help
@@ -31,6 +36,7 @@ public class DownloadDefinitions {
         System.out.printf("%s%n", "    d14 | https://plato.stanford.edu" );
         System.out.printf("%s%n", "    d15 | https://www.merriam-webster.com/thesaurus" );
 		System.out.printf("%s%n", "    d16 | http://suggest.aspell.net" );
+		System.out.printf("%s%n", "    d17 | Pronounce Words Using Google" );
     }
     
     
@@ -174,13 +180,7 @@ public class DownloadDefinitions {
 				// Arraylist to store values so they can be alphabetized
 				ArrayList<String> alphabetizedMeSynonyms = new ArrayList<String>();
 				ArrayList<String> alphabetizedMeAntonyms = new ArrayList<String>();
-				
-                //Elements paragraphs = doc.select(".relevancy-list  .text");
-                //Element p;
-				
-				//Elements content = doc.getElementsByClass("synonyms-container css-14xt5dz e1991neq0");
-				//Elements links = doc.select("a");
-				
+							
 				// Begin select Synonyms
 				Elements content = doc.getElementsByClass("css-1lc0dpe et6tpn80");
 				Elements links = content.select("a[href]");
@@ -190,22 +190,10 @@ public class DownloadDefinitions {
 				// Begin select Antonyms
 				Elements contentAntonyms = doc.getElementsByClass("antonyms-container css-14xt5dz e1991neq0");
 				Elements linksAntonyms = contentAntonyms.select("a[href]");
-				//Elements synonymslinks = content.get(0).select("a[href]");
 				// End select Antonyms
-				
-				//System.out.printf("%s  ", "X X :: " + contentAntonyms.size() );
-				//System.out.printf("%s  ", "X X :: " + contentAntonyms.text() );
-				//System.out.printf("%s  ", "X X :: " + linksAntonyms.size() );
-				//System.out.printf("%s  ", "X X :: " + linksAntonyms.text() );
 								
                 System.out.printf("%nSEARCHING : %s%n%n", theUrl);   
 				
-				//System.out.printf("%s  ", "X X :: " + links.text() );
-				//System.out.printf("%s  ", "X X :: " + content.size() );
-				//System.out.printf("%s  ", "X X :: " + synonymslinks.size() );
-				//System.out.printf("%s  ", "X X :: " + content.get(0).text() );
-				//System.out.printf("%s  ", "X X :: " + synonymslinks.get(0).text() );
-
 				for ( Element link : synonymslinks ){
 					alphabetizedMeSynonyms.add( link.text() );
 				}
@@ -552,11 +540,46 @@ public class DownloadDefinitions {
         } catch ( IOException e) {
             e.printStackTrace();
         }  
+		
+		// Play pronunciation
+	
+		// Open Compound Words
+		// http://ssl.gstatic.com/dictionary/static/sounds/20160317/estrous_cycle--1_us_1.mp3
+		// http://ssl.gstatic.com/dictionary/static/sounds/20160317/ontological--_us_1.mp3
 
+           if ( whichSource.equals ("d17") ){  
 
+			   if ( s.contains(" ") ) {
+				   s = s.replaceAll(" ", "_");
+				   s = s.concat ("--1_us_1.mp3");
+			   }else{
+				   s = s.concat ("--_us_1.mp3");
+			   }	   
 
-    }
-    
+			   theUrl = "http://ssl.gstatic.com/dictionary/static/sounds/20160317/" + s ;
+
+                System.out.printf("%nSEARCHING : %s%n%n", theUrl); 
+			   
+			   try {
+					String cmd = "mplayer "+ theUrl;
+					Runtime run = Runtime.getRuntime();
+					Process pr = run.exec(cmd);
+					//pr.waitFor();
+					BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+					String line = "";
+
+					while ((line=buf.readLine())!=null) {
+						System.out.println(line);
+					}
+				   
+			   	} catch (Exception e) {
+					e.printStackTrace();
+				}		
+	
+            }  // End if
+            
+
+    }	// END getDefinition 
 
     public static void main(String[] args) throws IOException {
         
@@ -579,7 +602,7 @@ public class DownloadDefinitions {
             String lettersIhave = args[1];
             String findMe = args[0];
             
-            if ( findMe.matches ("\\bd(?:1[0-6]|[1-9])\\b") ){
+            if ( findMe.matches ("\\bd(?:1[0-7]|[1-9])\\b") ){
                 getDefinition ( lettersIhave , findMe );
             }
         }
