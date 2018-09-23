@@ -53,6 +53,28 @@ alias gd='/usr/bin/java -cp /home/yourUserName/java/jcode:/home/yourUserName/jav
 
 Youtube Demo: https://youtu.be/Y6Y-cYtueZE
 
+////////////////// ScrabbleHelper //////////////////
+
+This command line tool helps you find words in a scrabble game.
+
+Example: 
+	Execute
+		Searching Example
+
+		java -cp .:./jsoup-1.10.2.jar ScrabbleHelper "loveone" "**e*"
+
+Output :
+elev
+even
+even
+neel
+noel
+noel
+olen
+oleo
+oven
+veen
+
 ////////////////// Anagram  //////////////////
 
 Description:
